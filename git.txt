@@ -20,3 +20,13 @@ git fetch              /git fetch origin main
 git pull               /git pull origin main
 (git branch -vv) check upstream branch
 (git branch -u {remote repository name}/{remote branch name})
+
+##########################error############################
+git pull origin main
+From https://github.com/m4thphobia/SDEs
+ * branch            main       -> FETCH_HEAD
+fatal: refusing to merge unrelated histories
+-----------------------------------------------------------
+git pull origin main --allow-unrelated-histories
+git push -u origin main
+############################################################
