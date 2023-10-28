@@ -1,0 +1,22 @@
+##terminal:move to working directory##
+
+git init
+
+git add filename
+git add .
+
+git commit
+git commit -m "comment"
+
+##github:make remote repository##
+--> + --> new repository -->  make repository
+
+##terminal:terminal:move to working directory##
+git  branch -M main
+git remote add origin url
+git push -u origin main/git push origin main
+git push               /git push origin main
+git fetch              /git fetch origin main
+git pull               /git pull origin main
+(git branch -vv) check upstream branch
+(git branch -u {remote repository name}/{remote branch name})
