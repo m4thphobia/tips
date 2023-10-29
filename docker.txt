@@ -40,7 +40,7 @@ how to use:
         *status: container's status
     $docker container ls -a
         *show all containers including exited containers
-    ## exit from and stop container
+    ## exit and stop container
     $docker container stop CONTAINER ID
     $docker container stop NAME
         *can check CONTAINER ID/NAME by ls command
@@ -48,11 +48,16 @@ how to use:
     ## restart exited container
     $docker container restart CONTAINER ID
     $docker container restart NAME
-    ##discard container
+    ## discard container
     $docker container rm CONTAINER ID
     $docker container rm NAME
         *cannot use this command for a container whose status is up
-
+    ## discard all containers whose status is exited
+    $docker container prune
+    ## discard container whose status is up
+    $docker container rm -f CONTAINER ID
+    ## discard container promptly after running command
+    $docker container run --rm imagename command
     *
     old commands   /   new commands
     docker pull    /docker image pull
@@ -61,6 +66,28 @@ how to use:
     docker ps      /docker container ls
     docker run     /docker container run
     docker rm      /docker container rm
+
+    additianal commands
+    ## check deffault command
+    $docker image inspect imagename
+
+    ## run command of your choice with initiating container
+    $docker container run -it imagename command
+    ## run command of your choice whose status is up
+    ($docker container restart CONTAINER ID)
+    $docker container exec (-it) CONTAINER ID command
+    $docker container exec (-it) NAME command
+        *can be used only to container whose status is up
+
+    ## name container
+    $docker container run --name NAME imagename
+
+    ## detatched mode <-> foreground mode
+    ## with initiating container
+    $docker conainer run -(it)d imagename
+    $docker container attach CONTAINER_ID
+    ## with container whose status is up
+    $docker container exec -d CONTAINER_ID command
 
 ##concepts and commands: intermediate level
 bash: one of the shell used for OS distributed from unix(linux, mac os, ...)
@@ -75,7 +102,26 @@ example:
     ubuntu: one of the linux os
         me ---commands---> bash[ubuntu(kernel,...)]
 
-    $ docker container run -it ubuntu:20.04
+    ## launch standard ubuntu enviroment
+*   $ docker container run -it ubuntu:20.04
     root@c8b717457928:/#
      ^        ^
      username container id
+    *status: accessing ubuntu through bash as root user
+    *can use pwd, ls, ...
+    *exit command:
+    *-i: open standard inputs
+    *-t: arrange appearance
+
+    ## check deffault command
+*   $docker image inspect imagename
+    $docker image inspect ubuntu:20.04
+    ## run command of your choice with initiating container
+*   $docker container run -it imagename command
+    $docker container run -it ubuntu:20.04 pwd
+    ## run command of your choice whose status is up
+    ($docker container restart CONTAINER ID)
+    $docker container exec -it CONTAINER ID bash(,ls, ...)
+
+    ## name container
+    $docker container run --name NAME imagename
