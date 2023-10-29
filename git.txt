@@ -1,3 +1,15 @@
+### initial settings ##################
+git --global user.name 'hoge'
+git --global user.email 'hoge@gmail.com'
+git config --list
+@.ssh directory
+ssh-keygen -t ed25519 -C "@gmail.com"
+cat id_ed25519.pub
+# copy N register pub for github
+ssh -T git@github.com
+--> yes
+#######################################
+
 ##terminal:move to working directory##
 
 git init
