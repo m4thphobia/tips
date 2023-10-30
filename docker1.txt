@@ -39,4 +39,4 @@ CMD ["ls", "-la"]             <--default command, one CMD line in one Dockerfile
                                  executed when run container
 *CMD["exec file","parameter1","parameter2",...]
 #########################################################
-.dockerignore
+

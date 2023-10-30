@@ -1,0 +1,33 @@
+Python
+#########################################################
+FROM python:3
+
+RUN apt update
+RUN apt install -y tree
+RUN pip install numpy matplotlib
+
+WORKDIR /workspace
+
+CMD ["bash"]
+#########################################################
+
+docker image build -t imagename .
+docker container run -v $(pwd):/workspace imagename
+
+dockerignore
+#########################################################
+# ignore .git and .cache folders
+.git
+.cache
+
+# ignore all markdown files (md)
+*.md
+
+# ignore sensitive files
+private.key
+setting.json
+
+#
+log
+tmp
+#########################################################
