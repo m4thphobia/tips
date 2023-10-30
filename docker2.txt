@@ -1,0 +1,11 @@
+volume/bind-mount
+
+#volume
+$docker container run -v volume_name:container_abs_path image_name
+$docker container run --mount type=volume src=volume_name, dst=container_abs_path image_name
+
+#bind-mount
+$docker container run -v local_abs_path:container_abs_path image_name
+$docker container run -v $(pwd)/:container_abs_path image_name
+$docker container run --mount type=bind, src=local_abs_path, dst=container_abs_path image_name
+? directories which you wanna mount should be uneder docker_build_contxt ?
