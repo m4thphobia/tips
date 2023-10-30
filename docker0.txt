@@ -68,7 +68,7 @@ how to use:
     docker rm      /docker container rm
 
     additianal commands
-    ## check deffault command
+    ## check default command
     $docker image inspect imagename
 
     ## run command of your choice with initiating container
@@ -113,7 +113,7 @@ example:
     *-i: open standard inputs
     *-t: arrange appearance
 
-    ## check deffault command
+    ## check default command
 *   $docker image inspect imagename
     $docker image inspect ubuntu:20.04
     ## run command of your choice with initiating container

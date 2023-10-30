@@ -1,0 +1,42 @@
+## Dockerfile ##
+〇custamize image
+×custamize container
+
+A, B, C <--decolate baseimage with units of your choice
+BASEMENT <--download from dockerhub
+
+x$docker image build Dockerfile_path
+o$docker image build build_context_path
+    *"docker image build" create image from "Dockerfile" and "build context path"
+    *sub_directories of "build context path" is communicated to DAEMON.
+    *so, "Dockerfile" and "any directories you wanna copy" must be under "build context path"
+    *$docker image build -f Dockerfile_path build_context_path
+
+$cd workspace
+$touch Dockerfile
+$open Dockerfile
+$docker image build .
+
+## check image layer
+docker image history CONTAINER_ID
+########################################################
+#comment out
+FROM ubuntu:20.04             <--base image
+
+ARG hello = "Hello World"     <-- used in Dockerfile
+Env hoge = HOGEHOGE           <-- use in container
+WORKDIR /app/my_dir           <-- mkdir and go there
+RUN apt update                <--default command
+RUN apt install -y curl          additional function(-y: answer yes to questions)
+                                 executed when build image = valid only in Dockerfile = discarded when build image
+
+
+COPY ./hello.txt /app/        <--COPY <file_directory_path_from_Dockerfile> directory
+*just copied when container is created, not mounted. Any change will not be reflected/
+*directories you wanna copy must be included in build_context_path
+
+CMD ["ls", "-la"]             <--default command, one CMD line in one Dockerfile
+                                 executed when run container
+*CMD["exec file","parameter1","parameter2",...]
+#########################################################
+.dockerignore
