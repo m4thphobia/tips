@@ -11,8 +11,24 @@ WORKDIR /workspace
 CMD ["bash"]
 #########################################################
 
+
+Pytorch
+#########################################################
+FROM nvcr.io/nvidia/pytorch:21.12-py3
+
+WORKDIR /workspace
+
+COPY requirements.txt /workspace/
+
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install --no-install-recommends -y tmux \
+    && pip install -r requirements.txt
+#########################################################
+
+
 docker image build -t imagename .
-docker container run -v $(pwd):/workspace imagename
+docker container run -it -v $(pwd):/workspace imagename
 
 dockerignore
 #########################################################
