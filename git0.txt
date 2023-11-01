@@ -40,5 +40,7 @@ From https://github.com/m4thphobia/SDEs
 fatal: refusing to merge unrelated histories
 -----------------------------------------------------------
 git pull origin main --allow-unrelated-histories
+git add .
+git commit -m ""
 git push -u origin main
 ############################################################
