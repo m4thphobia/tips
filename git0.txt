@@ -1,6 +1,6 @@
 ### initial settings ##################
-git --global user.name 'hoge'
-git --global user.email 'hoge@gmail.com'
+git config --global user.name 'hoge'
+git config --global user.email 'hoge@gmail.com'
 git config --list
 @.ssh directory
 ssh-keygen -t ed25519 -C "@gmail.com"
@@ -25,7 +25,7 @@ git commit -m "comment"
 
 ##terminal:terminal:move to working directory##
 git  branch -M main
-git remote add origin url
+git remote add origin url ##use ssh url
 git push -u origin main/git push origin main
 git push               /git push origin main
 git fetch              /git fetch origin main
