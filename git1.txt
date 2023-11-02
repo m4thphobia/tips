@@ -1,2 +1,62 @@
+git  status
+git log --oneline
+git log --graph
+git diff
+git diiff branchname branchname
+git diff commit_id commit_id
+
+git clone url
+git clone -b branchname url
+###########################################################################
+## reset  :back to the past
+## revert :bring item back now
+⓪
+無
+①
+git add
+②
+git commit
+③
+git push
+④
+pull request
+⑤
+
+⑥⑦⑧⑨⑩
 
 
+⓪→①
+new file: git clean -f file_path
+diff    : git restore file_path
+diff    : git restore .
+
+②→①
+git restore --staged file_path
+git restore --staged .
+git reset file_path
+git restore .
+
+③→②
+git reset --soft HEAD^(or previous_commit_id)
+③→①
+git reset --mixed HEAD^(or previous_commit_id)
+③→⓪
+git reset --hard HEAD^(or previous_commit_id)
+
+④→③
+git reset --soft HEAD^
+
+⑤→④
+git push --delete origin practice
+
+## cancel local merge
+git reset --hard ORIG_HEAD
+git revert -m 1or2 commit_id
+###########################################################################
+stash
+## before add
+git stash save -u "comment"
+git stash list
+git show stash stash@{i}
+git stash apply
+git stash drop
