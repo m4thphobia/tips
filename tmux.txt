@@ -1,0 +1,19 @@
+## boot tmux
+tmux
+tmux new -s session_name
+## show sessions
+tmux ls
+## dettach from a session
+prefix + d
+## show windows
+prefix + w
+## move to another window
+prefix + window_number
+## attach session
+tmux a
+tmux a -t session_name
+## kill session
+tmux kill-session
+tmux kill-session -t session_name
+## kill server
+tmux kill-server

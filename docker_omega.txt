@@ -1,4 +1,4 @@
-Python
+Easy Python
 #########################################################
 FROM python:3
 
@@ -15,19 +15,60 @@ CMD ["bash"]
 
 Pytorch
 #########################################################
-FROM nvcr.io/nvidia/pytorch:21.12-py3
+FROM nvcr.io/nvidia/pytorch:22.04-py3
+
+RUN apt update && apt upgrade -y \ 
+    && apt-get upgrade -y \
+    && apt-get instal&& apt install -y --no-install-recommends \
+    tmux \
+    tree
+
+
+ENV USER_NAME=developer
+
+# sudoを使用できるようにする
+RUN echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${USER_NAME}
+
+# 一般ユーザがユーザ/グループを追加できるようにする
+# entrypoint.sh内でパーミッションを元に戻す
+RUN chmod u+s /usr/sbin/useradd \
+    && chmod u+s /usr/sbin/groupadd
+
+
+COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR /workspace
 
-COPY requirements.txt /workspace/
+#COPY requirements.txt / workspace/
+#RUN pip install -r requirements.txt
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install --no-install-recommends -y tmux \
-    && pip install -r requirements.txt
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]
+-------------------------------------------------------------------------------------
+entrypoint.sh
+#!/bin/bash -e
+
+USER_ID=$(id -u)
+GROUP_ID=$(id -g)
+
+# グループを作成する
+if [ x"$GROUP_ID" != x"0" ]; then
+    groupadd -g $GROUP_ID $USER_NAME
+fi
+
+# ユーザを作成する
+if [ x"$USER_ID" != x"0" ]; then
+    useradd -d /home/$USER_NAME -m -s /bin/bash -u $USER_ID -g $GROUP_ID $USER_NAME
+fi
+
+# パーミッションを元に戻す
+sudo chmod u-s /usr/sbin/useradd
+sudo chmod u-s /usr/sbin/groupadd
+
+exec $@
 #########################################################
 
-
+chmod a+x entrypoint.sh
 docker image build -t imagename .
 docker container run -it -v $(pwd):/workspace imagename
 
