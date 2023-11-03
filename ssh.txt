@@ -1,0 +1,24 @@
+install extensions 'Remote Explorer' & 'Remote ssh'
+
+##UseLocalServer
+    ## move to .ssh
+    cd /Users/.ssh
+    ## key generate
+    ssh-keygen -t ed25519 -C "comment" -f "name of key"
+    ## modify ssh config
+    Host name_of_your_choice
+        HostName sever_ip
+        User username@server
+        IdentityFile fullpath_to_secret_sshkey
+
+## UseRemoteServer
+    ##move to .ssh
+    ##modify authorized_keys
+    cat authorized_keys
+    nano ~/.ssh/authorized_keys
+    PASTE PUBLIC KEY starting from 'ssh-'
+
+## UseLocalServer
+    Remote Explorer --> SSH+ --> user@host
+
+
