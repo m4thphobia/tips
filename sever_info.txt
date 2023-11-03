@@ -1,0 +1,68 @@
+Dockerfile
+##############################################################################
+FROM nvcr.io/nvidia/pytorch:21.12-py3
+
+WORKDIR /workspace/
+COPY requirements.txt / workspace/
+
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install --no-install-recommends -y tmux \
+    && pip install -r requirements.txt
+##############################################################################
+
+requirements.txt
+##############################################################################
+omegaconf
+tqdm
+wndb
+##############################################################################
+
+README.md
+##############################################################################
+#仮想環境の作成
+1. Docker imageの作成
+docker build -t <image_name> .
+
+img name: 'whoami'_phm_img
+ctn name: 'whomai'_phm_ctn
+x
+2. Docker containerの作成
+docker run -it --gpus all -v ~/<parent_directory_name>:workspace --name <container_name> <image_name> /bin/bash
+
+docker exec -it <container_name> bash
+##############################################################################
+
+
+
+
+
+Server Address: 157.82.77.232
+Pre-shared-key: takehisa-rcast-yairi
+VPN account
+username : settai
+password : settai-rcast-yairi-645
+
+workstation : maia (IP : 192.168.100.12)
+workstation account
+username : settai
+password : settai
+
+
+#パスワード認証から公開鍵への切り替え
+##############################################################################
+#公開鍵の生成(クライアント側)
+ssh-keygen -t rsa -b 2048
+#サーバーに入る(クライアント側)
+ssh <username>@<server IP>
+#User直下に.sshフォルダ作成
+mkdir /home/User/.ssh
+#サーバー側に公開鍵の登録
+echo "公開鍵の内容" >> ~/.ssh/authorized_keys
+#パーミッションの設定
+chmod 600 ~/.ssh/authorized_keys
+
+インストール
+remote ssh インストール
+remote.ssh.ConfigFile -> C:/Users/k3tsx/.ssh/config
+remote.ssh.UseLocalServer -> チェック外す
