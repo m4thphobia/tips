@@ -1,27 +1,130 @@
+.
+├── dockerbuild
+│   ├── Dockerfile
+│   ├── entrypoint.sh
+│   └── requirements.txt
+└── workspace
+    └── src
+
+chmod a+x entrypoint.sh
+docker build -f dockerbuild/Dockerfile -t imagename .
+docker container run -u $(id -u):$(id -g) -it -v $(pwd)/workspace:/workspace imagename
+#################################################################
+Pytorch
+-----------------------------------------------------------------
+FROM nvcr.io/nvidia/pytorch:22.04-py3
+
+RUN apt update && apt upgrade -y \
+    && apt install && apt install -y --no-install-recommends \
+    sudo \
+    tmux \
+    tree
+
+ENV USER_NAME=developer
+
+RUN echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${USER_NAME}
+
+RUN chmod u+s /usr/sbin/useradd \
+    && chmod u+s /usr/sbin/groupadd
+
+COPY dockerbuild/entrypoint.sh /entrypoint.sh
+
+RUN mkdir workspace
+
+#COPY requirements.txt / workspace/
+#RUN pip install -r requirements.txt
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]
+-----------------------------------------------------------------
+entrypoint.sh
+-----------------------------------------------------------------
+#!/bin/bash -e
+
+USER_ID=$(id -u)
+GROUP_ID=$(id -g)
+
+# グループを作成する
+if [ x"$GROUP_ID" != x"0" ]; then
+    groupadd -g $GROUP_ID $USER_NAME
+fi
+# ユーザを作成する
+if [ x"$USER_ID" != x"0" ]; then
+    useradd -d /home/$USER_NAME -m -s /bin/bash -u $USER_ID -g $GROUP_ID $USER_NAME
+fi
+
+# パーミッションを元に戻す
+sudo chmod u-s /usr/sbin/useradd
+sudo chmod u-s /usr/sbin/groupadd
+
+exec $@
+-----------------------------------------------------------------
+requirements.txt
+-----------------------------------------------------------------
+#################################################################
+
+
+#################################################################
+Python
+-----------------------------------------------------------------
+FROM python:3
+
+RUN apt update && apt upgrade -y \
+    && apt install && apt install -y --no-install-recommends \
+    sudo \
+    tmux \
+    tree
+
+ENV USER_NAME=developer
+
+RUN echo "${USER_NAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/${USER_NAME}
+
+RUN chmod u+s /usr/sbin/useradd \
+    && chmod u+s /usr/sbin/groupadd
+
+COPY dockerbuild/entrypoint.sh /
+COPY dockerbuild/requirements.txt /
+RUN pip install -r requirements.txt
+
+RUN mkdir workspace
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]
+-----------------------------------------------------------------
+entrypoint.sh
+-----------------------------------------------------------------
+#!/bin/bash -e
+
+USER_ID=$(id -u)
+GROUP_ID=$(id -g)
+
+# グループを作成する
+if [ x"$GROUP_ID" != x"0" ]; then
+    groupadd -g $GROUP_ID $USER_NAME
+fi
+# ユーザを作成する
+if [ x"$USER_ID" != x"0" ]; then
+    useradd -d /home/$USER_NAME -m -s /bin/bash -u $USER_ID -g $GROUP_ID $USER_NAME
+fi
+
+# パーミッションを元に戻す
+sudo chmod u-s /usr/sbin/useradd
+sudo chmod u-s /usr/sbin/groupadd
+
+exec $@
+-----------------------------------------------------------------
+requirements.txt
+-----------------------------------------------------------------
+numpy
+matplotlib
+#################################################################
+
 Easy Python
 #########################################################
 FROM python:3
 
-RUN apt update
-RUN apt install -y tree
-RUN pip install numpy matplotlib
-
-WORKDIR /workspace
-#COPY . . #bind-mount will do
-
-CMD ["bash"]
-#########################################################
 
 
-Pytorch
-#########################################################
-FROM nvcr.io/nvidia/pytorch:22.04-py3
-
-RUN apt update && apt upgrade -y \ 
-    && apt-get upgrade -y \
-    && apt-get instal&& apt install -y --no-install-recommends \
-    tmux \
-    tree
 
 
 ENV USER_NAME=developer

@@ -61,3 +61,6 @@ git show stash stash@{i}
 git stash apply
 git stash drop
 ###########################################################################
+git rev-parse --is-inside-work-tree
+git rm --cached ファイル名やディレクトリ名
+git commit -m "Untrack ファイル名やディレクトリ名"
