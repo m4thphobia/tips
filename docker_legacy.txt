@@ -1,4 +1,4 @@
-case: uid gid mystery
+case: uid gid mystery1
 ##################################################################################################
 .
 ├── Dockerfile
@@ -39,4 +39,48 @@ root@976d1c061ed3:/# cat user_id.txt
 0
 root@976d1c061ed3:/# cat group_id.txt
 0
+#####################################################################################################
+case: uid gid mystery2
+#####################################################################################################
+Dockerfile:
+FROM ubuntu:20.04
+
+ENV USER_NAME=developer
+ARG HOST_USER_ID
+ARG HOST_GROUP_ID
+ENV UID $HOST_USER_ID
+ENV GID $HOST_GROUP_ID
+
+RUN mkdir workspace
+RUN chmod u+s /workspace \
+    && chmod u+s /workspace
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["bash"]
+---------------------------------------------------------------------------------------------------
+entrypoint.sh:
+#!/bin/bash -e
+
+USER_ID=$(id -u)
+GROUP_ID=$(id -g)
+
+echo $USER_ID > user_id.txt
+echo $GROUP_ID > group_id.txt
+
+exec $@
+---------------------------------------------------------------------------------------------------
+
+settai@maia:~/test2/mtest$ docker container run -u 1005:$1005 -it -v $(pwd):/workspace test5
+I have no name!@d76ec85d2a00:/$ echo $UID
+1005
+I have no name!@d76ec85d2a00:/$ echo $GID
+1005
+I have no name!@d76ec85d2a00:/$ cd workspace
+I have no name!@d76ec85d2a00:/workspace$ ls
+Dockerfile  entrypoint.sh  group_id.txt  user_id.txt
+I have no name!@d76ec85d2a00:/workspace$ cat group_id.txt
+5
+I have no name!@d76ec85d2a00:/workspace$ cat user_id.txt
+1005
 #####################################################################################################
