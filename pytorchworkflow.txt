@@ -1,0 +1,40 @@
+## Pytorch workflow
+1: data (prepare and load)
+2: build model
+3: fitting the model to data
+4: making predictions and evaluating a model
+5: saving and loading a model
+
+Machine learning is a game of two parts:
+1: Get data into a numerical representation.
+2: Build a model to learn patterns in that numerical representation.
+
+## Pytorch model building essentials
+1: torch.nn - contains all of the buildings for computational graphs
+2: torch.nn.Parameter - what parameters should our model try and learn, often a Pytorch layer from torch.nn will set these for us
+3: torch.nn.Module - the base class for all neural network modules. If you subclass it, you should overwite forward()
+4: torch.optim - this where the optimizers inPytorch live, they will help with gradient descent
+5: def forward() - All nn.Module subclasses require you to overwrite forward()
+6: torch.utils.data.Dataset
+7: torch.utils.data.Dataloader
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import torch
+from torch import nn
+import matplotlib.pyplot as plt
+#print(torch.__version__)
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
