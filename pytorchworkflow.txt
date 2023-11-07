@@ -1,9 +1,21 @@
 ## Pytorch workflow
 1: data (prepare and load)
+    torchvision.transforms
+    torch.utils.data.Dataset
+    torch.utils.data.DataLoader
 2: build model
+    #model, loss function
+    torch.nn
+    torch.nn.Module
+    torchvision.models
+    #optimizer
+    torch.optim
 3: fitting the model to data
 4: making predictions and evaluating a model
-5: saving and loading a model
+    torch.metrics
+5: Improve through experimentation
+    torch.utils.tensorboard
+6: saving and loading a model
 
 Machine learning is a game of two parts:
 1: Get data into a numerical representation.
@@ -18,8 +30,9 @@ Machine learning is a game of two parts:
 6: torch.utils.data.Dataset
 7: torch.utils.data.Dataloader
 
-
-
+## Things we need to train(move from some random parameters to the unknown parameter, from a poor representation of the data to a better representation of th data)
+Loss function: A function to measure how wrong your model's predictions are to the ideal outputs
+Optimizer: Takes into account the loss of a model and adjust the model's parameters
 
 
 
