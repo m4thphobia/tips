@@ -3,7 +3,7 @@
     torchvision.transforms
     torch.utils.data.Dataset
     torch.utils.data.DataLoader
-2: build model
+2: build a model(-->pick a loss function&optimizer-->build a training loop)
     #model, loss function
     torch.nn
     torch.nn.Module
@@ -34,7 +34,19 @@ Machine learning is a game of two parts:
 Loss function: A function to measure how wrong your model's predictions are to the ideal outputs
 Optimizer: Takes into account the loss of a model and adjust the model's parameters
 
+## Things we need in train loop
+1: Loop through the data
+2: Forward propagation
+3: Calculate the loss
+4: Optimizer zero grad
+5: Loss backward - move backwards through the network to calculate the gradients
+    of each of the parameters of our model with respect to the loss
+6: Optimizer step - use the optimizer to adjust our model's parameters to improve the loss
 
+## Saving & loading
+torch.save() - allows you save a Pytorch object in Python's pickle format
+torch.load() - allows you load a saved Pytorch object
+torch.nn.Module/load_state_dict() - allows you to load a model's saved state dictionally
 
 
 

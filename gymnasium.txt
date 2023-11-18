@@ -1,0 +1,30 @@
+env = gym.make('', render_mode='')
+b = gym.spaces.Box(low=np.array([-1,2]), high=np.array([3,4]))
+d = gym.spaces.Discrete(5, start=-2))
+## methods of env
+spec
+metadata
+observation_space --> .high .low
+action_space --> .sample()
+reset(state, info = env.reset())
+next_state, reward, done, truncated,  info = env.step(action)
+
+episode = 3
+
+for episode in range(episodes):
+    state, info = env.reset()
+    done = False
+    truncated = False
+    total_reward = 0
+    quit = False
+    while not done and not truncated and not quit:
+        next_action = env.action_space.sample()
+        next_state, reward, done, truncated,  info = env.step(next_action)
+        total_reward += total_reward
+        for event in pygame.event.get():
+            if event.type == pagame.QUIT:
+                pygame.quit()
+                quit = True
+    if quit:
+        break
+env.close()

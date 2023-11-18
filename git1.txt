@@ -64,3 +64,16 @@ git stash drop
 git rev-parse --is-inside-work-tree
 git rm --cached ファイル名やディレクトリ名
 git commit -m "Untrack ファイル名やディレクトリ名"
+###########################################################################
+## create new branch
+git branch newname
+## switch to target branch
+git switch targetname
+## create and switch to new branch
+git switch -c newname
+## rename
+git branch -m oldname newname
+## create and push to remote branch
+git push origin branchname
+## merge target to current branch
+git merge target
