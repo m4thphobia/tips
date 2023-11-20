@@ -1,0 +1,31 @@
+import torch
+import torch.nn
+
+class my_model(nn.Module):
+    def __init__(self):
+        super().__init__()
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return y
+
+model_0 = my_model()
+loss_fn = nn.L1Loss()
+optimizer = torch.optim.SGD(params=model_0.parameters(),
+                            lr=0.01)
+epochs = 1
+
+for epoch in range(epochs):
+    model_0.train()
+    y_pred = model_0(X_train)
+    loss = loss_fn(y_pred, y_train)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    model_0.eval()
+    with torch.inference_mode():
+        test_pred = model_0(X_test)
+        test_loss = loss_fn(test_pred, y_test)
+
+    print(f"Epoch: {epoch} | Loss: {loss} |Test: {test_loss}")
+
+    print(model_0.state_dict())
