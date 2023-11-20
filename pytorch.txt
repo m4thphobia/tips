@@ -28,4 +28,16 @@ for epoch in range(epochs):
 
     print(f"Epoch: {epoch} | Loss: {loss} |Test: {test_loss}")
 
-    print(model_0.state_dict())
+PATH = "./out/model_0.pth"
+torch.save(model_0.state_dict(), PATH)
+
+model_1 = my_model()
+model_1.load_state_dict(torch.load(PATH))
+model_1.to(device)
+
+model_1.eval()
+    with torch.inference_mode():
+        test_pred = model_1(X_test)
+        test_loss = loss_fn(test_pred, y_test)
+
+    print(f"Epoch: {epoch} | Loss: {loss} |Test: {test_loss}")
