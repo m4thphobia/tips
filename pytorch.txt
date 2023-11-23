@@ -1,13 +1,20 @@
 import torch
 import torch.nn
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 
 class my_model(nn.Module):
-    def __init__(self):
+    def __init__(self, in_features, out_features, hidden_features):
         super().__init__()
+        self.layers = nn.Sequential(
+            nn.Linear(in_features, hidden_features)
+            nn.Linear(hidden_features, out_features)
+        )
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return y
+        return self.layers(x)
 
-model_0 = my_model()
+model_0 = my_model().to(device)
+print(next(model_0.parameters()).device)
 loss_fn = nn.L1Loss()
 optimizer = torch.optim.SGD(params=model_0.parameters(),
                             lr=0.01)
@@ -26,9 +33,10 @@ for epoch in range(epochs):
         test_pred = model_0(X_test)
         test_loss = loss_fn(test_pred, y_test)
 
-    print(f"Epoch: {epoch} | Loss: {loss} |Test: {test_loss}")
+    if epoch % 100 == 0:
+        print(f"Epoch: {epoch} | Loss: {loss} |Test: {test_loss}")
 
-PATH = "./out/model_0.pth"
+PATH = "../out/model_0.pth"
 torch.save(model_0.state_dict(), PATH)
 
 model_1 = my_model()

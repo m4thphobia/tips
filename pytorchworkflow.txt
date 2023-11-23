@@ -49,6 +49,14 @@ torch.load() - allows you load a saved Pytorch object
 torch.nn.Module/load_state_dict() - allows you to load a model's saved state dictionally
 
 
+## Computer Vision in Pytorch
+
+torchvision: base domain library in Pytorch for CV
+torchvision.datasets: get datasets and data loading functions
+torchvision.models: get pretrained computer vision models that you can leverage for your own problems
+torchvision.transforms: functions for manipukating your vision data(images) to be suitable for your models
+torch.utils.data.Dataset: base dataset class for Pytorch
+torch.utils.data.Dataloader: creates a Python iterable over a dataset
 
 
 
