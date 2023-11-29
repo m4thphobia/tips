@@ -1,0 +1,4 @@
+motto1: If in doubt, run the code!
+motto2: Experiment, experint, experiment!
+motto3: visualize, visualize, visualize!
+motto4: Ask questions, including the dumb ones

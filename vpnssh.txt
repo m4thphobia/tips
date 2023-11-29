@@ -1,0 +1,21 @@
+## vpn ##############################################
+VPN Server
+Server Address: 157.82.77.232
+Pre-shared-key: takehisa-rcast-yairi
+
+VPN account
+username : settai
+password : settai-rcast-yairi-645
+
+設定 -> ネットワークとインターネット -> アダプターのオプションを変更する
+-> [該当するVPNを選択 する]-> プロパティ -> セキュリティ
+-> 次のプロトコルを許可する -> チャレンジ ハンドシェイク認証プロトコル
+
+## ssh ##############################################
+workstation : maia (IP : 192.168.100.12)
+workstation account
+username : settai
+password : settai
+
+cd .ssh
+ssh-keygen -t ed25519 -f "ed25519_maia"
