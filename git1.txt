@@ -10,43 +10,42 @@ git clone -b branchname url
 ###########################################################################
 ## reset  :back to the past
 ## revert :bring item back now
-⓪
+0.
 無
-①
+1.
 git add
-②
+2.
 git commit
-③
+3.
 git push
-④
+4.
 pull request
-⑤
-
-⑥⑦⑧⑨⑩
+5.
 
 
-⓪→①
+
+0 -> 1
 new file: git clean -f file_path
 diff    : git restore file_path
 diff    : git restore .
 
-②→①
+2 -> 1
 git restore --staged file_path
 git restore --staged .
 git reset file_path
 git restore .
 
-③→②
+3 -> 2
 git reset --soft HEAD^(or previous_commit_id)
-③→①
+3 -> 1
 git reset --mixed HEAD^(or previous_commit_id)
-③→⓪
+3 -> 0
 git reset --hard HEAD^(or previous_commit_id)
 
-④→③
+4 -> 3
 git reset --soft HEAD^
 
-⑤→④
+5 -> 4
 git push --delete origin practice
 
 ## cancel local merge
