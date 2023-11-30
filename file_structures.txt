@@ -1,0 +1,218 @@
+file structure:
+    .
+    ├── data
+    │   ├── train
+    │   └── val
+    ├── out
+    ├── var
+    └── src
+        ├── dataset.py
+        ├── model.py
+        ├── train.py
+        └── utils.py
+
+##  model.py  ############################################################################################
+imports
+
+class subclass1
+class subclass2
+    :
+
+class mainclass
+
+def test():
+    x = random input
+    y = random output
+
+    model = model(*args, **kwargs)
+    preds = model(x)
+
+    print(preds.shape)
+    assert preds.shape == y.shape
+
+if __name__ == "__main__":
+    test()
+
+##  train.py  ############################################################################################
+import torch.nn as nn
+import torch.optim as optim
+from model import MyModel
+from utils import(
+    load_checkpoint,
+    save_checkpoint,
+    get_loaders,
+    check_accuracy,
+    save_predictions_as_imgs
+)
+
+#  Hyperparameters etc.
+DEVICE = "cuda:1" if torch.cuda.is_available() else "cpu"
+SAVE_PATH = "../var/my_filename.pth.tar"
+LOAD_MODEL = False
+
+LEARNING_RATE = 1e-4
+NUM_EPOCHS = 3
+BATCH_SIZE = 16
+NUM_WORKERS = 2
+PIN_MEMORY = True
+
+IMAGE_HEIGHT = 160 # 1280 originally
+IMAGE_WIDTH = 240 # 1918 originally
+TRAIN_IMG_DIR = "../data/train_images/"
+TRAIN_MASK_DIR = "../data/train_masks/"
+VAL_IMG_DIR = "../data/val_images/"
+VAL_MASK_DIR ="../data/val_masks/"
+
+def train_fn(loader, model, optimizer, loss_fn, scaler):
+    loop = tqdm(loader)
+
+    for batch_idx, (data, targets) in enumerate(loop):
+        data = data.to(DEVICE)
+        targets = targets.float().unsqueeze(1).to(DEVICE)
+
+        with torch.cuda.amp.autocast():
+            predictions = model(data)
+            loss = loss_fn(predictions, targets)
+
+        optimizer.zero_grad()
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
+
+        loop.set_postfix(loss=loss.item())
+
+#  define transform
+#  define model, loss_fn, optimizer, scaler
+#  get loader from utils.py
+#  epoch
+#   train_fn
+#   print state_dict
+#   save_checkpoint
+#   check accuracy or loss
+def main():
+    train_transform =
+
+    val_transforms =
+    model = model(*args, **kwargs).to(DEVICE)
+    loss_fn =
+    optimizer = optim.Adam(model.parameters(), lr = LEARNING_RATE)
+    scaler = torch.cuda.amp.GradScaler(init_scale=4096)
+
+    train_loader, val_loader = get_loaders(*args, **kwargs)
+
+    if LOAD_MODEL:
+        load_checkpoint(torch.load(SAVE_PATH), model, optimizer)
+
+    for epoch in range(NUM_EPOCHS):
+        train_fn(train_loader, model, optimizer, loss_fn, scaler)
+
+        checkpoint = {
+            "state_dict": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
+        }
+        save_checkpoint(checkpoint)
+
+        check_accuracy(val_loader, model, DEVICE)
+        save_predictions_as_imgs(val_loader, model)
+
+
+if __name__ == "__main__":
+    main()
+
+##  util.py  #############################################################################################
+import torch
+from dataset import MyDataset
+from torch.utils.data import DataLoader
+
+def save_checkpoint(state, filename="../var/my_checkpoint.pth.tar"):
+    print("=> Saving checkpoint")
+    torch.save(state, filename)
+
+
+def load_checkpoint(checkpoint, model, optimizer):
+    print("=> Loading checkpoint")
+    model.load_state_dict(checkpoint["state_dict"])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
+
+def get_loaders(
+    train_dir,
+    train_maskdir,
+    val_dir,
+    val_maskdir,
+    batch_size,
+    train_transform,
+    val_transform,
+    num_workers=4,
+    pin_memory=True,
+    ):
+
+    train_ds =CarvanaDataset(
+        image_dir=train_dir,
+        mask_dir=train_maskdir,
+        transform=train_transform,
+    )
+
+    train_loader = DataLoader(
+        train_ds,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        shuffle=True,
+    )
+
+    val_ds =CarvanaDataset(
+        image_dir=val_dir,
+        mask_dir=val_maskdir,
+        transform=val_transform,
+    )
+
+    val_loader = DataLoader(
+        val_ds,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        pin_memory=pin_memory,
+        shuffle=False,
+    )
+
+    return train_loader, val_loader
+
+
+def check_accuracy(loader, model, device="cuda:1"):
+    num_correct=0
+    num_pixels=0
+    dice_score=0
+    model.eval()
+
+    with torch.no_grad():
+        for x, y in loader:
+            x = x.to(device)
+            y = y.to(device).unsqueeze(1)
+            preds = torch.sigmoid(model(x))
+            preds = (preds > 0.5).float()
+            num_correct += (preds == y).sum()
+            num_pixels += torch.numel(preds)
+            dice_score += (2 * (preds *y).sum()) /(
+                (preds + y).sum + 1e-8
+            )
+    print(
+        f"Got {num_correct}/{num_pixels} with acc {num_correct/num_pixels*100:.2f}"
+    )
+    print(f"Dice score: {dice_score/len(loader)}")
+    model.train()
+
+
+def save_predictions_as_imgs(loader, model, folder='../out', device='cuda:1'):
+    model.eval()
+    for idx, (x, y) in enumerate(loader):
+        x = x.to(device)
+        with torch.no_grad():
+            preds = torch.sigmoid(model(x))
+            preds = (preds > 0.5).float()
+        torchvision.utils.save_image(
+            preds, f"{folder}/pred_{idx}.png"
+        )
+        torchvision.utils.save_image(y.unsqueeze(1), f"{folder}")
+
+    model.train()
+
