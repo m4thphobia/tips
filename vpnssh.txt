@@ -17,5 +17,19 @@ workstation account
 username : settai
 password : settai
 
+workstation : maia (IP : 192.168.100.9)
+workstation account
+username : settai
+password : settai
+
+@local
 cd .ssh
 ssh-keygen -t ed25519 -f "ed25519_maia"
+
+@remote
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+
+echo "公開鍵の内容" >> ~/.ssh/authorized_keys
+chmod 600 authorized_keys
+
